@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ten Lessons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F2E2E;
+    --ink-2:#16403E;
+    --ink-3:#1E524E;
+    --paper:#EDE7D9;
+    --paper-dim:#9FB2AA;
+    --brass:#C9A24B;
+    --brass-soft:rgba(201,162,75,.14);
+    --mint:#7FB8A8;
+    --line:rgba(237,231,217,.12);
+    --line-strong:rgba(237,231,217,.22);
+    --danger:#D98B7A;
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Public Sans",system-ui,sans-serif;
+    --mono:"Space Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--paper);font-family:var(--sans)}
+  body{min-height:100dvh;display:flex;flex-direction:column;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input{font-family:inherit}
+
+  /* Header */
+  header{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 20px;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:20;background:rgba(15,46,46,.92);backdrop-filter:blur(8px);
+  }
+  .back{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;color:var(--paper-dim);text-decoration:none;transition:color .18s}
+  .back:hover{color:var(--paper)}
+  .back svg{width:15px;height:15px}
+  .wordmark{font-family:var(--serif);font-weight:600;font-size:1.05rem;letter-spacing:.01em}
+  .wordmark b{color:var(--brass);font-weight:600}
+  .h-spacer{flex:1}
+  .h-btn{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;color:var(--paper-dim);padding:7px 12px;border-radius:999px;border:1px solid var(--line);transition:all .18s}
+  .h-btn:hover{color:var(--paper);border-color:var(--line-strong);background:var(--ink-2)}
+  .h-btn svg{width:15px;height:15px}
+  .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:1px solid var(--line);color:var(--paper-dim);transition:all .18s}
+  .icon-btn:hover{color:var(--paper);border-color:var(--line-strong);background:var(--ink-2)}
+  .icon-btn svg{width:18px;height:18px}
+
+  main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:28px 20px 64px;width:100%}
+
+  /* Enroll */
+  .enroll-hero{padding:22px 0 10px}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:16px}
+  .enroll-hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,7vw,3.3rem);line-height:1.05;letter-spacing:-.01em}
+  .enroll-hero h1 em{font-style:italic;color:var(--mint)}
+  .enroll-sub{color:var(--paper-dim);margin-top:14px;font-size:1rem;max-width:44ch}
+  .enroll-form{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+  .topic-input{
+    width:100%;background:var(--ink-2);border:1px solid var(--line-strong);border-radius:14px;
+    padding:16px 18px;color:var(--paper);font-size:1.05rem;transition:border-color .18s;
+  }
+  .topic-input::placeholder{color:var(--paper-dim);opacity:.7}
+  .topic-input:focus{outline:none;border-color:var(--mint)}
+  .btn-primary{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    background:var(--brass);color:#231a05;font-weight:700;font-size:1rem;
+    padding:15px 20px;border-radius:14px;transition:transform .12s,filter .18s;
+  }
+  .btn-primary:hover{filter:brightness(1.06)}
+  .btn-primary:active{transform:translateY(1px)}
+  .btn-primary:disabled{opacity:.5;cursor:default}
+  .btn-primary svg{width:17px;height:17px}
+  .suggest-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .chip{font-size:.82rem;color:var(--paper-dim);border:1px solid var(--line);padding:7px 13px;border-radius:999px;transition:all .18s}
+  .chip:hover{color:var(--paper);border-color:var(--brass);background:var(--brass-soft)}
+
+  .section-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--paper-dim);margin:38px 0 14px;display:flex;align-items:center;gap:12px}
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* Course cards on home */
+  .course-list{display:flex;flex-direction:column;gap:12px}
+  .course-card{
+    display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+    background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:16px 18px;transition:all .18s;
+  }
+  .course-card:hover{border-color:var(--line-strong);background:var(--ink-3)}
+  .cc-body{flex:1;min-width:0}
+  .cc-topic{font-family:var(--serif);font-size:1.12rem;font-weight:500;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cc-meta{font-size:.8rem;color:var(--paper-dim);margin-top:4px}
+  .cc-prog{font-family:var(--mono);font-size:.78rem;color:var(--brass);white-space:nowrap}
+
+  .empty{color:var(--paper-dim);font-size:.92rem;padding:6px 2px}
+
+  /* Course / path view */
+  .course-head{margin-bottom:26px;display:flex;align-items:flex-start;gap:18px}
+  .course-head .ch-text{flex:1;min-width:0}
+  .course-head h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,5.5vw,2.2rem);line-height:1.1;letter-spacing:-.01em}
+  .course-head .ch-sub{color:var(--paper-dim);font-size:.85rem;margin-top:6px}
+  .ring{position:relative;width:72px;height:72px;flex-shrink:0}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .rt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .rt b{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--paper);line-height:1}
+  .ring .rt span{font-family:var(--mono);font-size:.6rem;color:var(--paper-dim);letter-spacing:.1em}
+
+  /* The Path spine (signature) */
+  .path{position:relative;padding-left:8px}
+  .station{
+    position:relative;display:flex;gap:18px;padding:0 0 4px 0;width:100%;text-align:left;align-items:stretch;
+  }
+  .st-rail{position:relative;width:44px;flex-shrink:0;display:flex;justify-content:center}
+  .st-rail::before{content:"";position:absolute;top:0;bottom:0;width:2px;background:var(--line);left:50%;transform:translateX(-50%)}
+  .station:first-child .st-rail::before{top:22px}
+  .station:last-child .st-rail::before{bottom:auto;height:22px}
+  .node{
+    position:relative;z-index:2;width:44px;height:44px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--ink);border:2px solid var(--line-strong);
+    font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--paper-dim);
+    margin-top:0;transition:all .22s;
+  }
+  .node svg{width:20px;height:20px}
+  .st-body{
+    flex:1;min-width:0;padding:0 0 22px 0;
+  }
+  .st-inner{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+    transition:all .18s;
+  }
+  .station:hover .st-inner{border-color:var(--line-strong);background:var(--ink-3)}
+  .st-title{font-family:var(--serif);font-size:1.06rem;font-weight:500;line-height:1.25}
+  .st-obj{font-size:.85rem;color:var(--paper-dim);margin-top:5px}
+  .st-tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;margin-top:9px;display:inline-flex;align-items:center;gap:6px}
+  /* states */
+  .station.done .node{background:var(--brass);border-color:var(--brass);color:#231a05}
+  .station.done .st-tag{color:var(--brass)}
+  .station.current .node{border-color:var(--mint);color:var(--mint);box-shadow:0 0 0 4px rgba(127,184,168,.16)}
+  .station.current .st-inner{border-color:rgba(127,184,168,.4)}
+  .station.current .st-tag{color:var(--mint)}
+  .st-tag.locked{color:var(--paper-dim)}
+
+  /* Lesson reader */
+  .lesson-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .lesson-num{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;color:var(--brass)}
+  .lesson-back{font-size:.82rem;color:var(--paper-dim);display:inline-flex;align-items:center;gap:6px}
+  .lesson-back:hover{color:var(--paper)}
+  .lesson-back svg{width:14px;height:14px}
+  .lesson-title{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,6vw,2.3rem);line-height:1.1;letter-spacing:-.01em;margin:10px 0 6px}
+  .lesson-obj{color:var(--mint);font-size:.95rem;margin-bottom:22px;font-style:italic;font-family:var(--serif)}
+  .lesson-body{font-size:1.02rem;line-height:1.7}
+  .lesson-body h3{font-family:var(--serif);font-weight:600;font-size:1.28rem;margin:26px 0 10px;color:var(--paper)}
+  .lesson-body h4{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin:20px 0 8px;color:var(--paper)}
+  .lesson-body p{margin:0 0 14px}
+  .lesson-body ul{margin:0 0 16px;padding-left:22px}
+  .lesson-body li{margin:0 0 7px}
+  .lesson-body strong{color:var(--paper);font-weight:700}
+  .lesson-body em{color:var(--mint)}
+  .lesson-body code{font-family:var(--mono);font-size:.86em;background:var(--ink-2);padding:2px 6px;border-radius:5px;color:var(--brass)}
+  .lesson-body pre{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;margin:0 0 16px;font-family:var(--mono);font-size:.86rem;white-space:pre-wrap}
+  .lesson-actions{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .btn-done{display:inline-flex;align-items:center;gap:9px;background:var(--brass);color:#231a05;font-weight:700;padding:13px 20px;border-radius:12px;transition:filter .18s,transform .12s}
+  .btn-done:hover{filter:brightness(1.06)}
+  .btn-done:active{transform:translateY(1px)}
+  .btn-done svg{width:17px;height:17px}
+  .btn-ghost{display:inline-flex;align-items:center;gap:8px;color:var(--paper-dim);border:1px solid var(--line);padding:13px 18px;border-radius:12px;transition:all .18s}
+  .btn-ghost:hover{color:var(--paper);border-color:var(--line-strong)}
+  .done-flag{display:inline-flex;align-items:center;gap:8px;color:var(--brass);font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}
+  .done-flag svg{width:16px;height:16px}
+
+  /* Loading */
+  .loader{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:60px 20px;text-align:center}
+  .spinner{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--brass);animation:spin .8s linear infinite}
+  .loader p{color:var(--paper-dim);font-size:.9rem}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Commencement */
+  .commence{text-align:center;padding:20px 0}
+  .cert{
+    position:relative;border-radius:20px;padding:40px 26px;margin:14px 0 26px;
+    background:linear-gradient(160deg,#173F3D,#123333);
+    border:2px solid var(--brass);
+    box-shadow:0 0 0 6px rgba(201,162,75,.08),0 24px 60px -30px rgba(0,0,0,.7);
+    overflow:hidden;
+  }
+  .cert::before{
+    content:"";position:absolute;inset:8px;border:1px solid rgba(201,162,75,.35);border-radius:12px;pointer-events:none;
+  }
+  .cert .seal{width:56px;height:56px;margin:0 auto 16px;color:var(--brass)}
+  .cert .kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin-bottom:14px}
+  .cert h2{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(1.7rem,6vw,2.4rem);line-height:1.15;margin:0 0 6px}
+  .cert .conferred{color:var(--paper-dim);font-size:.9rem;margin-top:14px}
+  .cert .date{font-family:var(--mono);font-size:.8rem;color:var(--paper);margin-top:4px;letter-spacing:.06em}
+  .commence-msg{color:var(--paper-dim);max-width:40ch;margin:0 auto 22px;font-size:.95rem}
+  .foil{position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,240,200,.14),transparent);animation:foil 3.4s ease-in-out infinite}
+  @keyframes foil{0%{left:-60%}55%{left:120%}100%{left:120%}}
+
+  /* Skills */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .credential{
+    text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:18px;transition:all .18s;position:relative;overflow:hidden;
+  }
+  .credential:hover{border-color:var(--brass);background:var(--ink-3)}
+  .credential .cr-seal{width:26px;height:26px;color:var(--brass);margin-bottom:12px}
+  .credential .cr-topic{font-family:var(--serif);font-size:1.15rem;font-weight:500;line-height:1.2}
+  .credential .cr-meta{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--paper-dim);margin-top:12px;text-transform:uppercase}
+  .backup-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .backup-bar button{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:var(--paper-dim);border:1px solid var(--line);padding:10px 15px;border-radius:10px;transition:all .18s}
+  .backup-bar button:hover{color:var(--paper);border-color:var(--line-strong);background:var(--ink-2)}
+  .backup-bar button svg{width:15px;height:15px}
+  .backup-note{font-size:.78rem;color:var(--paper-dim);margin-top:12px;line-height:1.5}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(8,24,24,.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:var(--ink-2);border:1px solid var(--line-strong);border-radius:18px;padding:24px;width:100%;max-width:420px}
+  .modal h3{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:6px}
+  .modal .m-sub{color:var(--paper-dim);font-size:.85rem;margin-bottom:18px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.8rem;color:var(--paper-dim);margin-bottom:7px}
+  .field input{width:100%;background:var(--ink);border:1px solid var(--line-strong);border-radius:10px;padding:12px 14px;color:var(--paper);font-size:.95rem}
+  .field input:focus{outline:none;border-color:var(--mint)}
+  .field .hint{font-size:.74rem;color:var(--paper-dim);margin-top:7px;line-height:1.45}
+  .field .hint a{color:var(--brass)}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+  .btn-cancel{padding:11px 16px;border-radius:10px;color:var(--paper-dim);border:1px solid var(--line)}
+  .btn-cancel:hover{color:var(--paper)}
+  .btn-save{padding:11px 18px;border-radius:10px;background:var(--brass);color:#231a05;font-weight:700}
+  .divider{height:1px;background:var(--line);margin:20px 0}
+
+  /* Toast */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink-3);border:1px solid var(--line-strong);color:var(--paper);padding:12px 18px;border-radius:12px;font-size:.88rem;opacity:0;pointer-events:none;transition:all .25s;z-index:60;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .footer{text-align:center;padding:24px 20px 30px;color:var(--paper-dim);font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;border-top:1px solid var(--line)}
+
+  @media (max-width:480px){
+    main{padding:22px 16px 48px}
+    header{padding:12px 14px;gap:10px}
+    .h-btn span{display:none}
+    .h-btn{padding:9px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+    .foil{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="https://augustineiacopelli.github.io/appaday/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    AppADay
+  </a>
+  <div class="wordmark">Ten<b>Lessons</b></div>
+  <div class="h-spacer"></div>
+  <button class="h-btn" onclick="go('skills')" title="Skills">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    <span>Skills</span>
+  </button>
+  <button class="icon-btn" onclick="openSettings()" title="Settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+</header>
+
+<main id="app"></main>
+
+<div class="footer">APP #068 &middot; TEN LESSONS &middot; AI-POWERED</div>
+
+<!-- Settings Modal -->
+<div class="overlay" id="settingsModal">
+  <div class="modal">
+    <h3>Settings</h3>
+    <div class="m-sub">Your key stays on this device and is used only to reach Claude directly from your browser.</div>
+    <div class="field">
+      <label>Claude API Key</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off">
+      <div class="hint">Get one at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>. Stored locally, never uploaded anywhere but Anthropic.</div>
+    </div>
+    <div class="divider"></div>
+    <div class="field">
+      <label>Your course library</label>
+      <div class="hint">Courses save to this browser's durable storage (IndexedDB). Export a backup file to keep them forever or move them to another device.</div>
+      <div class="backup-bar">
+        <button onclick="exportData()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export backup</button>
+        <button onclick="document.getElementById('importFile').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 8l5-5 5 5"/><path d="M12 3v12"/></svg>Import backup</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSettings()">Close</button>
+      <button class="btn-save" onclick="saveSettings()">Save key</button>
+    </div>
+  </div>
+</div>
+<input type="file" id="importFile" accept="application/json" style="display:none" onchange="importData(event)">
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const CLAUDE_MODEL = 'claude-sonnet-5';
+const LESSON_COUNT = 10;
+const LS_KEY = 'tl_api_key';
+
+/* ---------- Durable storage: IndexedDB with in-memory fallback ---------- */
+const Store = (function(){
+  const DB_NAME = 'tenLessonsDB';
+  const STORE = 'courses';
+  let dbPromise = null;
+  let mem = null; // fallback map
+
+  const openDB = () => {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve, reject) => {
+      let req;
+      try { req = indexedDB.open(DB_NAME, 1); }
+      catch (e) { reject(e); return; }
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE, { keyPath: 'id' });
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+    return dbPromise;
+  };
+
+  const useMem = () => {
+    if (!mem) mem = new Map();
+    return mem;
+  };
+
+  const all = async () => {
+    try {
+      const db = await openDB();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readonly');
+        const rq = tx.objectStore(STORE).getAll();
+        rq.onsuccess = () => resolve(rq.result || []);
+        rq.onerror = () => reject(rq.error);
+      });
+    } catch (e) {
+      return Array.from(useMem().values());
+    }
+  };
+
+  const put = async (course) => {
+    try {
+      const db = await openDB();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).put(course);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => reject(tx.error);
+      });
+    } catch (e) {
+      useMem().set(course.id, course);
+      return true;
+    }
+  };
+
+  const remove = async (id) => {
+    try {
+      const db = await openDB();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).delete(id);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => reject(tx.error);
+      });
+    } catch (e) {
+      useMem().delete(id);
+      return true;
+    }
+  };
+
+  return { all, put, remove };
+})();
+
+/* ---------- App state ---------- */
+const state = {
+  view: 'enroll',
+  courses: [],       // loaded from Store
+  courseId: null,
+  lessonN: null,
+  busy: false,
+};
+
+const app = document.getElementById('app');
+
+/* ---------- Small helpers ---------- */
+const getKey = () => { try { return localStorage.getItem(LS_KEY) || ''; } catch (e) { return ''; } };
+const uid = () => 'c_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const currentCourse = () => state.courses.find(c => c.id === state.courseId) || null;
+const fmtDate = (ms) => new Date(ms).toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+
+let toastTimer = null;
+const toast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+};
+
+const go = (view, opts) => {
+  opts = opts || {};
+  state.view = view;
+  if (opts.courseId !== undefined) state.courseId = opts.courseId;
+  if (opts.lessonN !== undefined) state.lessonN = opts.lessonN;
+  window.scrollTo(0, 0);
+  render();
+};
+
+/* ---------- Markdown (escaped, safe) ---------- */
+const inlineMd = (s) => s
+  .replace(/`([^`]+)`/g, '<code>$1</code>')
+  .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+  .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+const renderMd = (md) => {
+  const lines = esc(md || '').split(/\r?\n/);
+  let html = '', inList = false, inCode = false;
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    if (/^```/.test(line)) {
+      if (inCode) { html += '</pre>'; inCode = false; }
+      else { closeList(); html += '<pre>'; inCode = true; }
+      continue;
+    }
+    if (inCode) { html += line + '\n'; continue; }
+    if (/^\s*#{1,3}\s+/.test(line)) { closeList(); html += '<h3>' + inlineMd(line.replace(/^\s*#{1,3}\s+/, '')) + '</h3>'; continue; }
+    if (/^\s*[-*]\s+/.test(line)) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + inlineMd(line.replace(/^\s*[-*]\s+/, '')) + '</li>'; continue; }
+    if (/^\s*\d+\.\s+/.test(line)) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + inlineMd(line.replace(/^\s*\d+\.\s+/, '')) + '</li>'; continue; }
+    if (/^\s*$/.test(line)) { closeList(); continue; }
+    closeList();
+    html += '<p>' + inlineMd(line) + '</p>';
+  }
+  if (inCode) html += '</pre>';
+  closeList();
+  return html;
+};
+
+/* ---------- Claude API ---------- */
+const callClaude = async (system, userText, maxTokens) => {
+  const key = getKey();
+  if (!key) throw new Error('NO_KEY');
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: CLAUDE_MODEL,
+      max_tokens: maxTokens,
+      system: system,
+      messages: [{ role: 'user', content: userText }]
+    })
+  });
+  if (!resp.ok) {
+    if (resp.status === 401) throw new Error('BAD_KEY');
+    throw new Error('API_' + resp.status);
+  }
+  const data = await resp.json();
+  return (data.content || []).map(b => b.text || '').join('\n').trim();
+};
+
+const parseJsonArray = (text) => {
+  let t = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+  const a = t.indexOf('['), b = t.lastIndexOf(']');
+  if (a !== -1 && b !== -1) t = t.slice(a, b + 1);
+  return JSON.parse(t);
+};
+
+const SYLLABUS_SYSTEM =
+`You are the curriculum designer for Ten Lessons, an app that turns any topic into a focused ${LESSON_COUNT}-lesson path to genuine working proficiency. Given a topic, design exactly ${LESSON_COUNT} lessons that build in strict sequence from first principles to applied competence. Lesson 1 assumes no prior knowledge; lesson ${LESSON_COUNT} represents practical, real-world proficiency. Each lesson has a "title" of 2 to 6 words and a one-sentence "objective" naming the concrete skill or understanding gained. Respond with ONLY a JSON array of exactly ${LESSON_COUNT} objects, each with keys "title" and "objective". No prose, no markdown, no code fences.`;
+
+const lessonSystem = (topic, lesson, priorTitles) => {
+  const prior = priorTitles.length ? priorTitles.join('; ') : 'none yet';
+  return `You are the instructor for Ten Lessons, teaching lesson ${lesson.n} of ${LESSON_COUNT} in a course on "${topic}".
+
+This lesson's title: "${lesson.title}"
+This lesson's objective: ${lesson.objective}
+Earlier lessons already completed by the learner: ${prior}
+
+Write a focused, self-contained teaching module the learner can work through in about 5 to 10 minutes. Use markdown with this shape:
+- one short orientation paragraph (no heading),
+- a "## Key ideas" section with 2 to 4 ideas explained plainly, each with a concrete example,
+- a "## Worked example" section with one clear walkthrough,
+- a "## Check yourself" section with 2 to 3 short questions the learner can answer to confirm they got it.
+
+Be direct and practical. Assume the earlier lessons are known; do not re-teach them. Do not add a preamble or a sign-off. Keep the whole lesson under 420 words.`;
+};
+
+/* ---------- Actions ---------- */
+const buildCourse = async (topic) => {
+  topic = topic.trim();
+  if (!topic) return;
+  if (!getKey()) { openSettings(); toast('Add your Claude API key to build a course.'); return; }
+  if (state.busy) return;
+  state.busy = true;
+  state.view = 'building';
+  state._buildTopic = topic;
+  render();
+  try {
+    const raw = await callClaude(SYLLABUS_SYSTEM, 'Topic: ' + topic, 900);
+    const arr = parseJsonArray(raw);
+    if (!Array.isArray(arr) || arr.length < LESSON_COUNT) throw new Error('BAD_SHAPE');
+    const lessons = arr.slice(0, LESSON_COUNT).map((x, i) => ({
+      n: i + 1,
+      title: String(x.title || ('Lesson ' + (i + 1))).trim(),
+      objective: String(x.objective || '').trim(),
+      content: null,
+      completed: false
+    }));
+    const course = {
+      id: uid(), topic: topic, createdAt: Date.now(), updatedAt: Date.now(),
+      graduatedAt: null, lessons: lessons
+    };
+    state.courses.unshift(course);
+    await Store.put(course);
+    state.busy = false;
+    go('course', { courseId: course.id });
+  } catch (e) {
+    state.busy = false;
+    state.view = 'enroll';
+    if (e.message === 'NO_KEY' || e.message === 'BAD_KEY') { openSettings(); toast('That key was rejected. Check it and try again.'); }
+    else toast('Could not build the course. Try again in a moment.');
+    render();
+  }
+};
+
+const openLesson = async (n) => {
+  const course = currentCourse();
+  if (!course) return;
+  const lesson = course.lessons.find(l => l.n === n);
+  if (!lesson) return;
+  go('lesson', { lessonN: n });
+  if (lesson.content) return; // cached, instant
+  if (!getKey()) { toast('Add your Claude API key to open a lesson.'); openSettings(); return; }
+  state.busy = true; render();
+  try {
+    const prior = course.lessons.filter(l => l.n < n).map(l => l.title);
+    const md = await callClaude(lessonSystem(course.topic, lesson, prior), 'Please write this lesson now.', 1500);
+    lesson.content = md;
+    course.updatedAt = Date.now();
+    await Store.put(course);
+  } catch (e) {
+    if (e.message === 'NO_KEY' || e.message === 'BAD_KEY') { openSettings(); toast('Check your API key and reopen the lesson.'); }
+    else toast('Could not load this lesson. Try again.');
+  }
+  state.busy = false; render();
+};
+
+const completeLesson = async (n) => {
+  const course = currentCourse();
+  if (!course) return;
+  const lesson = course.lessons.find(l => l.n === n);
+  if (!lesson) return;
+  lesson.completed = true;
+  course.updatedAt = Date.now();
+  const allDone = course.lessons.every(l => l.completed);
+  if (allDone && !course.graduatedAt) course.graduatedAt = Date.now();
+  await Store.put(course);
+  if (allDone) go('commencement', { courseId: course.id });
+  else go('course', { courseId: course.id });
+};
+
+const deleteCourse = async (id) => {
+  if (!confirm('Delete this course and its saved lessons? This cannot be undone.')) return;
+  await Store.remove(id);
+  state.courses = state.courses.filter(c => c.id !== id);
+  toast('Course deleted.');
+  go('enroll');
+};
+
+/* ---------- Backup / restore ---------- */
+const exportData = () => {
+  const payload = { app: 'ten-lessons', version: 1, exportedAt: Date.now(), courses: state.courses };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const d = new Date().toISOString().slice(0, 10);
+  a.href = url; a.download = 'ten-lessons-backup-' + d + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  toast('Backup downloaded.');
+};
+
+const importData = async (ev) => {
+  const file = ev.target.files && ev.target.files[0];
+  ev.target.value = '';
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    const incoming = Array.isArray(data) ? data : (data.courses || []);
+    if (!Array.isArray(incoming) || !incoming.length) { toast('No courses found in that file.'); return; }
+    const byId = new Map(state.courses.map(c => [c.id, c]));
+    let added = 0;
+    for (const c of incoming) {
+      if (!c || !c.id || !Array.isArray(c.lessons)) continue;
+      byId.set(c.id, c);
+      await Store.put(c);
+      added++;
+    }
+    state.courses = Array.from(byId.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    toast('Restored ' + added + ' course' + (added === 1 ? '' : 's') + '.');
+    closeSettings();
+    go('enroll');
+  } catch (e) {
+    toast('That file could not be read.');
+  }
+};
+
+/* ---------- Settings modal ---------- */
+const openSettings = () => {
+  document.getElementById('apiKeyInput').value = getKey();
+  document.getElementById('settingsModal').classList.add('open');
+};
+const closeSettings = () => document.getElementById('settingsModal').classList.remove('open');
+const saveSettings = () => {
+  const v = document.getElementById('apiKeyInput').value.trim();
+  try { if (v) localStorage.setItem(LS_KEY, v); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  closeSettings();
+  toast(v ? 'Key saved.' : 'Key cleared.');
+};
+
+/* ---------- Views ---------- */
+const progressOf = (c) => c.lessons.filter(l => l.completed).length;
+
+const ringSvg = (done, total) => {
+  const r = 30, c = 2 * Math.PI * r, off = c * (1 - done / total);
+  return `<div class="ring"><svg width="72" height="72" viewBox="0 0 72 72">
+    <circle cx="36" cy="36" r="${r}" fill="none" stroke="rgba(237,231,217,.12)" stroke-width="6"/>
+    <circle cx="36" cy="36" r="${r}" fill="none" stroke="#C9A24B" stroke-width="6" stroke-linecap="round"
+      stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>
+  </svg><div class="rt"><b>${done}</b><span>OF ${total}</span></div></div>`;
+};
+
+const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+const sealIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>';
+
+const viewEnroll = () => {
+  const inProgress = state.courses.filter(c => !c.graduatedAt);
+  const suggestions = ['Sourdough baking', 'Music theory', 'Personal finance', 'Watercolor', 'Chess openings', 'Public speaking'];
+  let html = `
+    <section class="enroll-hero">
+      <div class="eyebrow">A ten-lesson path to proficiency</div>
+      <h1>What do you want to <em>learn?</em></h1>
+      <p class="enroll-sub">Name a subject and Claude designs a ten-lesson course that carries you from first principles to real working skill. Your progress saves here, lesson by lesson.</p>
+      <div class="enroll-form">
+        <input class="topic-input" id="topicInput" placeholder="e.g. Beginner Italian, or how a car engine works"
+          onkeydown="if(event.key==='Enter')buildCourse(this.value)">
+        <button class="btn-primary" onclick="buildCourse(document.getElementById('topicInput').value)">
+          Build my course
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="suggest-row">
+        ${suggestions.map(s => `<button class="chip" onclick="buildCourse('${s.replace(/'/g,"\\'")}')">${esc(s)}</button>`).join('')}
+      </div>
+    </section>`;
+
+  if (inProgress.length) {
+    html += `<div class="section-label">Continue learning</div><div class="course-list">`;
+    for (const c of inProgress) {
+      const done = progressOf(c);
+      html += `<button class="course-card" onclick="go('course',{courseId:'${c.id}'})">
+        <div class="cc-body">
+          <div class="cc-topic">${esc(c.topic)}</div>
+          <div class="cc-meta">Started ${fmtDate(c.createdAt)}</div>
+        </div>
+        <div class="cc-prog">${done} / ${LESSON_COUNT}</div>
+      </button>`;
+    }
+    html += `</div>`;
+  }
+  return html;
+};
+
+const viewBuilding = () => `
+  <div class="loader">
+    <div class="spinner"></div>
+    <p>Designing ten lessons on<br><strong style="color:var(--paper)">${esc(state._buildTopic || 'your topic')}</strong></p>
+  </div>`;
+
+const viewCourse = () => {
+  const c = currentCourse();
+  if (!c) return viewEnroll();
+  const done = progressOf(c);
+  const nextN = (c.lessons.find(l => !l.completed) || {}).n;
+  let html = `
+    <div class="course-head">
+      <div class="ch-text">
+        <h2>${esc(c.topic)}</h2>
+        <div class="ch-sub">Ten lessons to working proficiency &middot; tap any lesson to begin</div>
+      </div>
+      ${ringSvg(done, LESSON_COUNT)}
+    </div>
+    <div class="path">`;
+  for (const l of c.lessons) {
+    const cls = l.completed ? 'done' : (l.n === nextN ? 'current' : '');
+    const nodeInner = l.completed ? checkIcon : String(l.n).padStart(2, '0');
+    let tag;
+    if (l.completed) tag = `<div class="st-tag">${checkIcon} Completed</div>`;
+    else if (l.n === nextN) tag = `<div class="st-tag">Recommended next</div>`;
+    else tag = `<div class="st-tag locked">Lesson ${String(l.n).padStart(2,'0')}</div>`;
+    html += `
+      <button class="station ${cls}" onclick="openLesson(${l.n})">
+        <div class="st-rail"><div class="node">${nodeInner}</div></div>
+        <div class="st-body"><div class="st-inner">
+          <div class="st-title">${esc(l.title)}</div>
+          <div class="st-obj">${esc(l.objective)}</div>
+          ${tag}
+        </div></div>
+      </button>`;
+  }
+  html += `</div>
+    <div class="backup-bar">
+      <button onclick="deleteCourse('${c.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Delete course</button>
+    </div>`;
+  return html;
+};
+
+const viewLesson = () => {
+  const c = currentCourse();
+  if (!c) return viewEnroll();
+  const l = c.lessons.find(x => x.n === state.lessonN);
+  if (!l) return viewCourse();
+  let body;
+  if (state.busy && !l.content) {
+    body = `<div class="loader"><div class="spinner"></div><p>Preparing your lesson...</p></div>`;
+  } else if (!l.content) {
+    body = `<p class="empty">This lesson has not loaded yet. <button class="chip" onclick="openLesson(${l.n})" style="margin-left:6px">Load lesson</button></p>`;
+  } else {
+    body = `<div class="lesson-body">${renderMd(l.content)}</div>
+      <div class="lesson-actions">
+        ${l.completed
+          ? `<span class="done-flag">${checkIcon} Lesson complete</span>
+             <button class="btn-ghost" onclick="go('course',{courseId:'${c.id}'})">Back to course</button>`
+          : `<button class="btn-done" onclick="completeLesson(${l.n})">${checkIcon} Mark complete</button>
+             <button class="btn-ghost" onclick="go('course',{courseId:'${c.id}'})">Save for later</button>`}
+      </div>`;
+  }
+  return `
+    <div class="lesson-top">
+      <a class="lesson-back" onclick="go('course',{courseId:'${c.id}'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        ${esc(c.topic)}
+      </a>
+    </div>
+    <div class="lesson-num">LESSON ${String(l.n).padStart(2, '0')} OF ${LESSON_COUNT}</div>
+    <h1 class="lesson-title">${esc(l.title)}</h1>
+    <div class="lesson-obj">${esc(l.objective)}</div>
+    ${body}`;
+};
+
+const viewCommencement = () => {
+  const c = currentCourse();
+  if (!c) return viewSkills();
+  return `
+    <div class="commence">
+      <div class="cert">
+        <div class="foil"></div>
+        <div class="seal">${sealIcon}</div>
+        <div class="kicker">Certificate of Completion</div>
+        <h2>${esc(c.topic)}</h2>
+        <div class="conferred">Ten lessons completed &middot; proficiency conferred</div>
+        <div class="date">${fmtDate(c.graduatedAt || Date.now())}</div>
+      </div>
+      <p class="commence-msg">You worked all ten lessons end to end. This course now lives in your Skills as a completed credential.</p>
+      <button class="btn-primary" onclick="go('skills')" style="display:inline-flex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        View my Skills
+      </button>
+    </div>`;
+};
+
+const viewSkills = () => {
+  const done = state.courses.filter(c => c.graduatedAt).sort((a, b) => b.graduatedAt - a.graduatedAt);
+  let html = `
+    <section class="enroll-hero" style="padding-bottom:0">
+      <div class="eyebrow">Your credentials</div>
+      <h1 style="font-size:clamp(1.9rem,6.5vw,2.9rem)">Skills</h1>
+      <p class="enroll-sub">Every course you have carried all the way to graduation.</p>
+    </section>
+    <div class="section-label">${done.length} completed course${done.length === 1 ? '' : 's'}</div>`;
+
+  if (!done.length) {
+    html += `<p class="empty">No graduations yet. Finish all ten lessons of a course to earn your first credential. <button class="chip" style="margin-left:6px" onclick="go('enroll')">Start a course</button></p>`;
+  } else {
+    html += `<div class="skills-grid">`;
+    for (const c of done) {
+      html += `<button class="credential" onclick="go('commencement',{courseId:'${c.id}'})">
+        <div class="cr-seal">${sealIcon}</div>
+        <div class="cr-topic">${esc(c.topic)}</div>
+        <div class="cr-meta">${fmtDate(c.graduatedAt)} &middot; 10/10</div>
+      </button>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `
+    <div class="section-label">Backup &amp; restore</div>
+    <div class="backup-bar">
+      <button onclick="exportData()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export backup</button>
+      <button onclick="document.getElementById('importFile').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 8l5-5 5 5"/><path d="M12 3v12"/></svg>Import backup</button>
+    </div>
+    <p class="backup-note">Courses are stored durably in this browser (IndexedDB), so they survive closing the tab and restarting your device. Export a backup file to keep them permanently or carry your whole library to another browser or phone.</p>`;
+  return html;
+};
+
+/* ---------- Render ---------- */
+const render = () => {
+  let html;
+  switch (state.view) {
+    case 'building': html = viewBuilding(); break;
+    case 'course': html = viewCourse(); break;
+    case 'lesson': html = viewLesson(); break;
+    case 'commencement': html = viewCommencement(); break;
+    case 'skills': html = viewSkills(); break;
+    default: html = viewEnroll();
+  }
+  app.innerHTML = html;
+};
+
+/* ---------- Boot ---------- */
+(async () => {
+  try {
+    const list = await Store.all();
+    state.courses = (list || []).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  } catch (e) { state.courses = []; }
+  render();
+})();
+
+document.getElementById('settingsModal').addEventListener('click', (e) => {
+  if (e.target.id === 'settingsModal') closeSettings();
+});
+</script>
+</body>
+</html>
