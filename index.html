@@ -10,6 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="manifest" href="https://augustineiacopelli.github.io/appaday/manifests/068.webmanifest">
 <script src="https://augustineiacopelli.github.io/appaday/save.js" defer></script>
+<script src="https://augustineiacopelli.github.io/appaday/models.js"></script>
+<script src="https://augustineiacopelli.github.io/appaday/keys.js" data-app="068" data-legacy-key="tl_api_key" data-accent="#1F7A8C" defer></script>
 <title>Ten Lessons | AppADay 068</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -281,11 +283,7 @@
   <div class="modal">
     <h3>Settings</h3>
     <div class="m-sub">Your key stays on this device and is used only to reach Claude directly from your browser.</div>
-    <div class="field">
-      <label>Claude API Key</label>
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off">
-      <div class="hint">Get one at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>. Stored locally, never uploaded anywhere but Anthropic.</div>
-    </div>
+    <div id="keyMount"><div class="hint">The key manager is loading. If this stays, check your connection and reload.</div></div>
     <div class="divider"></div>
     <div class="field">
       <label>Your course library</label>
@@ -296,8 +294,7 @@
       </div>
     </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeSettings()">Close</button>
-      <button class="btn-save" onclick="saveSettings()">Save key</button>
+      <button class="btn-save" onclick="closeSettings()">Close</button>
     </div>
   </div>
 </div>
@@ -308,9 +305,8 @@
 <script>
 "use strict";
 
-const CLAUDE_MODEL = await getModel();
+let CLAUDE_MODEL = (window.AppModels ? window.AppModels.id('sonnet') : '');
 const LESSON_COUNT = 10;
-const LS_KEY = 'tl_api_key';
 
 /* ---------- Durable storage: IndexedDB with in-memory fallback ---------- */
 const Store = (function(){
@@ -399,7 +395,6 @@ const state = {
 const app = document.getElementById('app');
 
 /* ---------- Small helpers ---------- */
-const getKey = () => { try { return localStorage.getItem(LS_KEY) || ''; } catch (e) { return ''; } };
 const uid = () => 'c_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
 const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const currentCourse = () => state.courses.find(c => c.id === state.courseId) || null;
@@ -455,7 +450,7 @@ const renderMd = (md) => {
 
 /* ---------- Claude API ---------- */
 const callClaude = async (system, userText, maxTokens) => {
-  const key = getKey();
+  const key = window.AppKeys ? await window.AppKeys.get() : null;
   if (!key) throw new Error('NO_KEY');
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -511,7 +506,8 @@ Be direct and practical. Assume the earlier lessons are known; do not re-teach t
 const buildCourse = async (topic) => {
   topic = topic.trim();
   if (!topic) return;
-  if (!getKey()) { openSettings(); toast('Add your Claude API key to build a course.'); return; }
+  if (!window.AppKeys) { toast('The key manager did not load. Check your connection and reload.'); return; }
+  if (!window.AppKeys.has()) { window.AppKeys.get(); toast('Add your Claude API key, then tap build again.'); return; }
   if (state.busy) return;
   state.busy = true;
   state.view = 'building';
@@ -552,7 +548,8 @@ const openLesson = async (n) => {
   if (!lesson) return;
   go('lesson', { lessonN: n });
   if (lesson.content) return; // cached, instant
-  if (!getKey()) { toast('Add your Claude API key to open a lesson.'); openSettings(); return; }
+  if (!window.AppKeys) { toast('The key manager did not load. Check your connection and reload.'); return; }
+  if (!window.AppKeys.has()) { window.AppKeys.get(); toast('Add your Claude API key, then reopen the lesson.'); return; }
   state.busy = true; render();
   try {
     const prior = course.lessons.filter(l => l.n < n).map(l => l.title);
@@ -630,16 +627,10 @@ const importData = async (ev) => {
 
 /* ---------- Settings modal ---------- */
 const openSettings = () => {
-  document.getElementById('apiKeyInput').value = getKey();
+  if (window.AppKeys) window.AppKeys.mountSettings(document.getElementById('keyMount'));
   document.getElementById('settingsModal').classList.add('open');
 };
 const closeSettings = () => document.getElementById('settingsModal').classList.remove('open');
-const saveSettings = () => {
-  const v = document.getElementById('apiKeyInput').value.trim();
-  try { if (v) localStorage.setItem(LS_KEY, v); else localStorage.removeItem(LS_KEY); } catch (e) {}
-  closeSettings();
-  toast(v ? 'Key saved.' : 'Key cleared.');
-};
 
 /* ---------- Views ---------- */
 const progressOf = (c) => c.lessons.filter(l => l.completed).length;
@@ -853,15 +844,6 @@ document.getElementById('settingsModal').addEventListener('click', (e) => {
   if (e.target.id === 'settingsModal') closeSettings();
 });
 
-async function getModel(tier = 'sonnet') {
-  try {
-    const response = await fetch('../config.json');
-    const config = await response.json();
-    return config.models[tier];
-  } catch {
-    return 'claude-sonnet-5-5';
-  }
-}
 </script>
 </body>
 </html>
